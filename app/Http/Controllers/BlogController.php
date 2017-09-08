@@ -121,6 +121,9 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $blog = Blog::find($id);
+        $blog->delete();
+        return redirect('blog')->with('message','blog sudah di hapus!');
+
     }
 }
