@@ -19,8 +19,8 @@ class BlogController extends Controller
      */
     public function index()
     {
-        // $blogs = Blog::all();
-        $blogs = DB::table('blog')->paginate(2);
+        $blogs = Blog::paginate(2);
+        // $blogs = DB::table('blog')->paginate(2);
 
         return view('blog.index',['blogs'=>$blogs]);
     }

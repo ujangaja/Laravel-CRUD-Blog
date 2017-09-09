@@ -5,7 +5,7 @@ Tahap yang dilakukan :
 
 
 
--action Delete
+#action Delete
 	ketikan perintah berikut pada index.blade.php:
 
 	<form action="/blog/{{$blog->id}}" method="post">
@@ -14,7 +14,7 @@ Tahap yang dilakukan :
 		<input type="submit" value="delete">
 	</form>
 
--pada controller 
+#pada controller 
 	tambah kan kode berikut pada function destroy:
 
 	$blog = Blog::find($id);
@@ -22,12 +22,12 @@ Tahap yang dilakukan :
         return redirect('blog')->with('message','blog sudah di hapus!');
 
 #Membuat link berdasarkan title atau nama jika membuka halam single
-	-buka index.blade.php ubah 
+	#buka index.blade.php ubah 
 		<a href="/blog/{{$blog->id}}"><p>{{$blog->title}}</p></a>
 	 menjadi :
 	 	<a href="/blog/{{$blog->title}}"><p>{{$blog->title}}</p></a>
 
-	 -pada bagian BlogController function show ganti:
+	 #pada bagian BlogController function show ganti:
 
         	public function show($id)
         menjadi :
@@ -37,24 +37,24 @@ Tahap yang dilakukan :
 
         $blog = Blog::find($id);
 
-      -menjadi:
+      #menjadi:
         $blog = Blog::where('title',$title)->first();
         
 
-       - lalu pada database buat fild baru dengan nama slug
-       -pada file migration table tambahkan:
+        #lalu pada database buat fild baru dengan nama slug
+       #pada file migration table tambahkan:
             $table->string('slug');
-       	-lalu pada BlogController pada function store tambahkan script berikut:
+       	#lalu pada BlogController pada function store tambahkan script berikut:
         $blog->slug    = str_slug($request->title,'-');
 
-        -pada index.blade.php 
+        #pada index.blade.php 
 	 		<a href="/blog/{{$blog->title}}"><p>{{$blog->title}}</p></a>
 
 	 		 title diganti menjadi slug:
 
 	 	<a href="/blog/{{$blog->slug}}"><p>{{$blog->title}}</p></a>
 
-	 	-pada BlogController  title di ganti juga jd slug
+	 	#pada BlogController  title di ganti juga jd slug
 	 		function show($title)
 			{
 				$blog = Blog::find($id);
@@ -77,28 +77,28 @@ Tahap yang dilakukan :
 
         		
 
-		-selanjutnya pada functionn edit ditambahkan script berikut:
+		#selanjutnya pada functionn edit ditambahkan script berikut:
         	$blog->slug    = str_slug($request->title,'-');
 
 
 
 #menampilkan waktu
-	-pada file index.balde .php tambah kan script berikut
+	#pada file index.balde .php tambah kan script berikut
 
 	{{date('F,d,y',strtotime($blog->created_at))}}
 
 
-#membuat pagination
-	-pada file BlogController function index ubah:
+#membuat pagination builder
+	#pada file BlogController function index ubah:
 
         $blogs = Blog::all();
 
-	-menjadi:
+	#menjadi:
 
 
         $blogs = DB::table('blog')->paginate(3);
 
-    -selanjutnya pada :
+   #selanjutnya pada :
 
     	namespace App\Http\Controllers;
 
@@ -109,8 +109,19 @@ Tahap yang dilakukan :
 		ditambahkan ini:
 		
 		use DB;
+#membuat pagination eloquent
+	#pada file BlogController function index ubah:
 
-	-untuk menampilkan angka  pada index.blade.php tambahkan scrip berikut setelah :
+        $blogs = Blog::all();
+
+	#menjadi:
+
+
+        $blogs = Blog::paginate(2);
+        
+        
+
+#untuk menampilkan angka  pada index.blade.php tambahkan scrip berikut setelah :
 		@endforeach
 		
 
