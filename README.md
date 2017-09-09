@@ -84,5 +84,35 @@ Tahap yang dilakukan :
 
 #menampilkan waktu
 	-pada file index.balde .php tambah kan script berikut
-	
+
 	{{date('F,d,y',strtotime($blog->created_at))}}
+
+
+#membuat pagination
+	-pada file BlogController function index ubah:
+
+        $blogs = Blog::all();
+
+	-menjadi:
+
+
+        $blogs = DB::table('blog')->paginate(3);
+
+    -selanjutnya pada :
+
+    	namespace App\Http\Controllers;
+
+		use Illuminate\Http\Request;
+		use App\Blog;
+		use App\Http\Requests;
+
+		ditambahkan ini:
+		
+		use DB;
+
+	-untuk menampilkan angka  pada index.blade.php tambahkan scrip berikut setelah :
+		@endforeach
+		
+
+		{!! $blogs->links()!!}
+

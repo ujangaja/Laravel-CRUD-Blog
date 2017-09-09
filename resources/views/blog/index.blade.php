@@ -20,3 +20,6 @@ All Blog List
 <hr>
 @endforeach
 
+
+{!! $blogs->links()!!}
+
