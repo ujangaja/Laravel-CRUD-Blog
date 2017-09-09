@@ -84,5 +84,5 @@ Tahap yang dilakukan :
 
 #menampilkan waktu
 	-pada file index.balde .php tambah kan script berikut
+	
 	{{date('F,d,y',strtotime($blog->created_at))}}
-		
