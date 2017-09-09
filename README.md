@@ -3,6 +3,53 @@ Laravel CRUD Blog sederhana
 
 Tahap yang dilakukan :
 
+#1.persiapan laravel
+	#pada comandline ketikan printah install composer
+	#instalasi juga laravelnya degan mengetik perintah pada comandline:
+
+	composer create-project --prefer-dist laravel/laravel blog
+
+#2.persiapan database
+	#untuk databasnya sendiri ,dengan laravel hanya perlu membuat databasenya saja .
+	nama databasenya : "laravel_blog"
+
+	#selanjutnya kita membuat migration,ketikan perintah berikut pada terminal:
+
+		php artisan make:migration create_blog_table
+#3. pengaturan pada file .envi 
+	
+		DB_CONNECTION=mysql
+		DB_HOST=127.0.0.1
+		DB_PORT=3306
+		DB_DATABASE=laravel_blog
+		DB_USERNAME=root
+		DB_PASSWORD=
+#4.menambah funtion up dan down pada  database/migratin/create_blog_table 	
+		#funtion up:
+
+		public function up()
+    {
+        Schema::create('blog', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->string('slug');
+            $table->string('subject');
+            $table->timestamps();
+        });
+    }
+
+
+    #function down:
+
+        Schema::dropIfExists('blog');
+
+	#selanjutnya jalankan dengan mengetkan printah berikut pada terminal:
+
+		php artisan migrate
+
+		#dan ketika dibuka pada databasenya kita sudah membunyai table  migration $ blog
+
+
 
 
 #action Delete
