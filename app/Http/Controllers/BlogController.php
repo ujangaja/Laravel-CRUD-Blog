@@ -38,6 +38,7 @@ class BlogController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -48,8 +49,9 @@ class BlogController extends Controller
 
         $blog = new Blog;
 
-        $blog->title = $request->title;
+        $blog->title   = $request->title;
         $blog->subject = $request->subject;
+        $blog->slug    = str_slug($request->title,'-');
 
         $blog->save();
 
@@ -62,9 +64,10 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($title)
     {
-        $blog = Blog::find($id);
+        // $blog = Blog::find($id);
+        $blog = Blog::where('slug',$title)->first();
         if(!$blog){
             abort(404);
         }
@@ -108,6 +111,7 @@ class BlogController extends Controller
         $blog->title = $request->title;
         $blog->subject = $request->subject;
 
+        $blog->slug    = str_slug($request->title,'-');
         $blog->save();
 
         return redirect('blog')->with('message','blog sudah di edit!');

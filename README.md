@@ -21,3 +21,64 @@ Tahap yang dilakukan :
         $blog->delete();
         return redirect('blog')->with('message','blog sudah di hapus!');
 
+#Membuat link berdasarkan title atau nama jika membuka halam single
+	-buka index.blade.php ubah 
+		<a href="/blog/{{$blog->id}}"><p>{{$blog->title}}</p></a>
+	 menjadi :
+	 	<a href="/blog/{{$blog->title}}"><p>{{$blog->title}}</p></a>
+
+	 -pada bagian BlogController function show ganti:
+
+        	public function show($id)
+        menjadi :
+    		public function show($title)
+
+    		dan :
+
+        $blog = Blog::find($id);
+
+      -menjadi:
+        $blog = Blog::where('title',$title)->first();
+        
+
+       - lalu pada database buat fild baru dengan nama slug
+       -pada file migration table tambahkan:
+            $table->string('slug');
+       	-lalu pada BlogController pada function store tambahkan script berikut:
+        $blog->slug    = str_slug($request->title,'-');
+
+        -pada index.blade.php 
+	 		<a href="/blog/{{$blog->title}}"><p>{{$blog->title}}</p></a>
+
+	 		 title diganti menjadi slug:
+
+	 	<a href="/blog/{{$blog->slug}}"><p>{{$blog->title}}</p></a>
+
+	 	-pada BlogController  title di ganti juga jd slug
+	 		function show($title)
+			{
+				$blog = Blog::find($id);
+				$blog    = Blog::where('title',$title)->first();
+				if(!$blog){
+				abort(404);
+			}
+
+		
+
+			ganti menjadi:
+
+			function show($title)
+			{
+				$blog = Blog::find($id);
+				$blog = Blog::where('slug',$title)->first();
+				if(!$blog){
+				abort(404);
+			}
+
+        		
+
+		-selanjutnya pada functionn edit ditambahkan script berikut:
+        	$blog->slug    = str_slug($request->title,'-');
+
+
+
